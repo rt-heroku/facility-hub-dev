@@ -1,15 +1,18 @@
 Security is set to basic so username:password or Header "Authorization: Basic <<BASE64 ENCODED user:password>>” needs to be included in each request.
 For more information: https://en.wikipedia.org/wiki/Basic_access_authentication
 
+Desfault password is:   P@ssword1
+
+
 To generate or reset the sysadmin user execute the following command:
 heroku run "java -jar target/secure-db-api-0.0.1-SNAPSHOT.jar <<password>> <<email>>”[ --size=<<dyno size>> optional parameter]
 Example: 
-heroku run "java -jar target/secure-db-api-0.0.1-SNAPSHOT.jar P@ssw0rd1 sysadmin@secure-api.heroku.com" --size=performance-m
+heroku run "java -jar target/secure-db-api-0.0.1-SNAPSHOT.jar P@ssword1 sysadmin@secure-api.heroku.com" --size=performance-m
 * This is a recovery command that will reset the sysadmin user by creating in case it doesn’t exist or reset it’s password in case password is lost.
 Add, modify or change password to other users including admins: (ROLE_ADMIN is required to the user that will execute the command)
-curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Cache-Control: no-cache" –d '{"username":"useradmin","password":"password","passwordConfirm":"password","email":"rodrigo@secure.com","roles":["ROLE_USER","ROLE_ADMIN"]}' "http://<<app_name>>.herokuapp.com/user/add” -u sysadmin:P@ssw0rd1
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Cache-Control: no-cache" –d '{"username":"useradmin","password":"password","passwordConfirm":"password","email":"rodrigo@secure.com","roles":["ROLE_USER","ROLE_ADMIN"]}' "http://<<app_name>>.herokuapp.com/user/add” -u sysadmin:P@ssword1
 Delete a user including admins: (ROLE_ADMIN is required to the user that will execute the command)
-curl -X DELETE -H "Content-Type: application/json" -H "Accept: application/json" -H "Cache-Control: no-cache” "http://<<app_name>>.herokuapp.com/user/remove/<<USER TO DELETE>>” -u sysadmin:P@ssw0rd1
+curl -X DELETE -H "Content-Type: application/json" -H "Accept: application/json" -H "Cache-Control: no-cache” "http://<<app_name>>.herokuapp.com/user/remove/<<USER TO DELETE>>” -u sysadmin:P@ssword1
 
 
 All data is stored in the table "users"
