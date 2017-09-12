@@ -5,59 +5,35 @@
 
 package com.wm.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.wm.model.ResponseMessage;
-import com.wm.entities.Facility;
-import com.wm.services.FacilityService;
 
 @Controller
-@RequestMapping(value="/config")
+@RequestMapping(value = "/config")
 public class ConfigRestController {
-	
-	private static Logger logger = LoggerFactory.getLogger(ConfigRestController.class);
-	
+
 	/*
 	 * READ METHODS
 	 */
 
-	@RequestMapping(value="", method=RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseMessage getAll() {
-
-		if (logger.isDebugEnabled())
-			logger.debug("ConfigController -> getAll");
-		
-		ResponseMessage responseMessage = new ResponseMessage();
-		try {
-			responseMessage.setData(System.getenv());
-		} catch (Exception e) {
-			logger.error("ConfigController -> getAll", e);
-			responseMessage.setError(-1, "Unable to Config: " + e.getMessage());
-		}
-		return responseMessage;
+	public Map<String, String> getAll() {
+		return System.getenv();
 	}
 
-	
 	@ExceptionHandler(Exception.class)
-	public @ResponseBody
-	String handleException(Exception e, HttpServletResponse response) {
-	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	    return e.getMessage();
+	public @ResponseBody String handleException(Exception e, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		return e.getMessage();
 	}
 
 }
-
