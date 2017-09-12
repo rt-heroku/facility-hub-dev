@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.wm.model.SimpleRecord;
 
 @Controller
 @RequestMapping(value = "/config")
@@ -28,6 +31,12 @@ public class ConfigRestController {
 	@ResponseBody
 	public Map<String, String> getAll() {
 		return System.getenv();
+	}
+
+	@RequestMapping(value = "/{variable}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public SimpleRecord getVariable(@PathVariable String variable) {
+		return new SimpleRecord(variable,System.getenv(variable));
 	}
 
 	@ExceptionHandler(Exception.class)
